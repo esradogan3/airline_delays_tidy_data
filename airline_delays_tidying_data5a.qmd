@@ -1,0 +1,33 @@
+---
+title: "Airline Delays Tidying Data"
+author: Esra Dogan
+format: html
+editor: visual
+---
+
+## Introduction
+
+In this assignment, I will work with a small dataset about flight arrivals. It shows the number of on-time and delayed flights for two airlines, Alaska and AM West, across five cities: Los Angeles, Phoenix, San Diego, San Francisco, and Seattle.\
+![](images/clipboard-3192214354.png)
+
+The data is given as a table in a "wide" format. Each city has its own column, and each airline has two rows, one for on-time flights and one for delayed flights. This format is easy for people to read, but it is not tidy, which makes it harder to analyze in R. The goal of this assignment is to recreate this table as a CSV file, clean and reshape it using tidyr and dplyr, and then compare the arrival delays of the two airlines.
+
+## Planned Approach
+
+First, I will use an LLM to help me transfer the table into Excel and save it as a CSV file in the same wide format. I will upload it to GitHub and read it into R.
+
+Next, I will use tidyr and dplyr to clean the data, so that each row shows one airline in one city with its on-time and delayed flights.
+
+Then, I will compare the two airlines by calculating their delay rates, both overall and for each city, and show the results with tables and charts.
+
+## Anticipated Challenges
+
+The messy parts of the data, like the missing airline names, the missing column names, and the empty row, may cause R to read the file incorrectly, so I will need to check it carefully after loading. Reshaping the data into the right tidy format may also take some trial and error. Another challenge is that the airlines have very different numbers of flights in each city, so I will compare delay rates instead of raw numbers. Finally, the overall results might not match the city-by-city results, and I will need to explain this difference clearly.
+
+```{r}
+library(tidyr)
+```
+
+```{r}
+library(dplyr)
+```
