@@ -1,7 +1,9 @@
 ---
 title: "Airline Delays Tidying Data"
 author: Esra Dogan
-format: html
+format:
+  html:
+    embed-resources: true
 editor: visual
 ---
 
@@ -31,3 +33,70 @@ library(tidyr)
 ```{r}
 library(dplyr)
 ```
+
+```{r}
+airline_delays <- read.csv("https://raw.githubusercontent.com/esradogan3/airline_delays_tidy_data/refs/heads/main/airline_assignment_5a.csv")
+head(airline_delays)
+```
+
+**Renaming column names:**
+
+```{r}
+airline_delays <- airline_delays %>%
+  rename(airline = X, arrival_status = X.1)
+head(airline_delays)
+```
+
+**Handling with the empty row:**
+
+```{r}
+airline_delays <- airline_delays %>%
+  filter(arrival_status != "")
+head(airline_delays)
+```
+
+\
+**Replacing empty cells with NA and filling them with the right Airline name. Then, making he cities values, and adding a new column as city. Changing arrival_status column to on_time and delayed:**
+
+```{r}
+airline_delays <- airline_delays %>%
+  mutate(airline = na_if(airline, ""))%>%
+  fill(airline)%>%
+pivot_longer(cols = Los.Angeles:Seattle, names_to = "city", values_to = "flights")%>%
+pivot_wider(names_from = arrival_status, values_from = flights)%>%
+  rename(on_time = `on time`)%>%
+  mutate(city = gsub(".", " ", city, fixed = TRUE))
+head(airline_delays)
+```
+
+**Adding a new column "delay_ratio":**
+
+```{r}
+airline_delays <- airline_delays %>%
+mutate(delay_ratio = delayed / (on_time + delayed))
+print(airline_delays)
+```
+
+**Calculating overall_ratio:**
+
+```{r}
+overall_delays <- airline_delays %>%
+  group_by(airline) %>%
+  summarise(overall_ratio = sum(delayed) / sum(delayed + on_time))
+print(overall_delays)
+```
+
+**Comparing the overall delay ratio on the chart:**
+
+```{r}
+library(ggplot2)
+ggplot(overall_delays , aes(x =airline, y = overall_ratio, fill = airline)) + geom_col()
+```
+
+**Using of LLm**
+
+In this assignment, I used an LLM as my tutor. It did not write any ready-made code for me; instead, it helped me step by step, like a teacher, while I wrote the code myself.
+
+## References
+
+Anthropic. (2026). *Claude* (Opus 5.5) \[Large language model\]. <https://claude.ai>
